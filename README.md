@@ -5,7 +5,8 @@ the [ChatEngine Framework](https://github.com/pubnub/chat-engine/) to operate.
 
 ## Provisioning the ChatEngine Framework Application and Key
 
-To set up PubNub to host the ChatEngine Framework REST API on a PubNub Function, you must first set up a new PubNub App. The following outlines how to manually set up a PubNub ChatEngine Framework Key.
+To set up PubNub to host the ChatEngine Framework REST API on a PubNub Function, you must first set up a new PubNub App.
+The following outlines how to manually set up a PubNub ChatEngine Framework Application and Key.
 
 1. Navigate to [PubNub's Portal](dashboard.pubnub.com), sign in, and select _Create New App_.
 1. Enter an App name (e.g. `ChatEngine Application`) and click _Create_.
@@ -38,7 +39,11 @@ To set up PubNub to host the ChatEngine Framework REST API on a PubNub Function,
 
 ## Provisioning the ChatEngine Framework Function
 
-### I. Bundle Server Code.
+### I. Bundle the server Server Code.
+
+The REST api is constructed of several files to improve understandability. The files
+must be bundled into a single function to upload to PubNub.
+
 1. Clone the `chat-engine-server` repo and run `npm install`.
 1. Run `npm run build` to create a bundled function at `app/functions/server.js`.
 1. Run `npm test` to verify that the bundle is correct.
@@ -56,7 +61,7 @@ To set up PubNub to host the ChatEngine Framework REST API on a PubNub Function,
 	| _Module Description_: | `REST Function that powers PubNub ChatEngine` |
 
 	
-1. Within the ChatEngine Module, click _+ create_ and fill in the following text fields:
+1. Within the ChatEngine Module, click _create_ and fill in the following text fields:
 
 	| Field	| Value |
 	|:------|:-----:|
@@ -65,7 +70,7 @@ To set up PubNub to host the ChatEngine Framework REST API on a PubNub Function,
 	| _URI path_ | `chat-engine-server` |
 
 1. Click _Create_ Function to navigate to the PubNub Functions Console.
-1. With the console open, copy & paste the server code at `app/functions/server.js` into the console editor and click save. 
+1. With the console open, copy and paste the server code from `app/functions/server.js` into the console editor and click _Save__.
 1. Click _Save_ at the top left side of the console editor.
 1. Click _My Secrets_, and enter the following, (get the `secretKey` from the App and Key [page](admin.pubnub.com)):
 
