@@ -4,9 +4,10 @@
 
 ### I. Bundle Server Code
 1. Clone the ```chat-engine-server``` repo and run ```npm install```
-2. Bundle the ChatEngine REST server by running ```gulp bundle```
+2. Bundle the ChatEngine REST server by running ```npm run build```
 	- The code outputs to ```app/functions/server.js```
-3. Copy the code to clipboard for later use.
+3. Verify that the function is correct by running ```npm test```
+4. Copy the code to clipboard for later use.
 
 ### II. Create a PubNub REST Function 
 
