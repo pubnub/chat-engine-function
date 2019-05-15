@@ -8,7 +8,7 @@ the [ChatEngine Framework](https://github.com/pubnub/chat-engine/) to operate.
 To set up PubNub to host the ChatEngine Framework REST API on a PubNub Function, you must first set up a new PubNub App.
 The following outlines how to manually set up a PubNub ChatEngine Framework Application and Key.
 
-1. Navigate to [PubNub's Portal](dashboard.pubnub.com), sign in, and select _Create New App_.
+1. Navigate to [PubNub's Portal](https://dashboard.pubnub.com/), sign in, and select _Create New App_.
 1. Enter an App name (e.g. `ChatEngine Application`) and click _Create_.
 1. Select the newly made App icon and navigate to the _Demo Keyset_.
 1. Update the following setting on the keyset:
@@ -39,9 +39,9 @@ The following outlines how to manually set up a PubNub ChatEngine Framework Appl
 
 ## Provisioning the ChatEngine Framework Function
 
-### Bundle the server Server Code.
+### Bundle the server Server Code
 
-The REST api is constructed of several files to improve understandability. The files
+The REST api is composed of several files to improve understandability. The files
 must be bundled into a single function to upload to PubNub.
 
 1. Clone the `chat-engine-server` repo and run `npm install`.
@@ -49,9 +49,9 @@ must be bundled into a single function to upload to PubNub.
 1. Run `npm test` to verify that the bundle is correct.
 1. Copy the code to your clipboard for later use.
 
-### Create a PubNub REST Function.
+### Create a PubNub REST Function
 
-1. On your [PubNub Admin Dashboard](dashboard.pubnub.com), go the ChatEngine app key you set up in the previous section to upload your Function.
+1. On your [PubNub Admin Dashboard](https://dashboard.pubnub.com/), go the ChatEngine app key you set up in the previous section to upload your Function.
 1. Select the _Functions_ tab on the top left side of the page.
 1. Fill out the following text fields and click _Create New Module_:
 
