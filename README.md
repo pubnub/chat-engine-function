@@ -1,19 +1,16 @@
-# ChatEngine Server
+# ChatEngine Framework Server
 
 This repository contains the REST API running as a PubNub function that is required for
 the [ChatEngine Framework](https://github.com/pubnub/chat-engine/) to operate.
 
-## ChatEngine Application and Key Provisioning Guide
+## Provisioning the ChatEngine Framework Application and Key
 
-To setup ChatEngine on PubNub, one must first setup a new PubNub App. The following outlines how to manually setup a PubNub ChatEngine Key.
+To set up PubNub to host the ChatEngine Framework REST API on a PubNub Function, you must first set up a new PubNub App. The following outlines how to manually set up a PubNub ChatEngine Framework Key.
 
-Setup an account, create a set up pubsub keys, configure these keys to 
-
-### Basic Steps
-1. Navigate to [PubNub's Portal](pubnub.com), sign in, and select the _Create New App_ button at the top-right of the logged in user's app page.
-1. Enter an App name (e.g. `ChatEngine Application`) and click the _Create_ button.
+1. Navigate to [PubNub's Portal](dashboard.pubnub.com), sign in, and select _Create New App_.
+1. Enter an App name (e.g. `ChatEngine Application`) and click _Create_.
 1. Select the newly made App icon and navigate to the _Demo Keyset_.
-1.  The following setting need to be updated on the key:
+1. Update the following setting on the keyset:
 
 | **Presence**      | `on` |
 |:--------------|:--------:|
@@ -39,21 +36,19 @@ Setup an account, create a set up pubsub keys, configure these keys to
 | **Access Manager** | `Enabled` |
 |:--------------|:--------:|
 
-## ChatEngine Server Provisioning Guide
+## Provisioning the ChatEngine Framework Function
 
-### Basic Steps
-
-#### I. Bundle Server Code
-1. Clone the `chat-engine-server` repo and run `npm install`
-1. Created a bundled function at `app/functions/server.js` by running  `npm run build`
-1. Run `npm test` to verify that the bundle is correct
+### I. Bundle Server Code.
+1. Clone the `chat-engine-server` repo and run `npm install`.
+1. Run `npm run build` to create a bundled function at `app/functions/server.js`.
+1. Run `npm test` to verify that the bundle is correct.
 1. Copy the code to your clipboard for later use.
 
-#### II. Create a PubNub REST Function 
+### II. Create a PubNub REST Function.
 
-1. Go to the ChatEngine App and Key setup in the previous guide: [ChatEngine Application and Key Provisioning Guide]()
-1. Select the _Functions_ tab on the top left-hand side of the ChatEngine Application.
-1. Fill out the following text fields and click the _Create New Module_ button:
+1. On your [PubNub Admin Dashboard](dashboard.pubnub.com), go the ChatEngine app key you set up in the previous section to upload your Function.
+1. Select the _Functions_ tab on the top left side of the page.
+1. Fill out the following text fields and click _Create New Module_:
 
 	| Field	| Value |
 	|:------|:-----:|
@@ -61,7 +56,7 @@ Setup an account, create a set up pubsub keys, configure these keys to
 	| _Module Description_: | `REST Function that powers PubNub ChatEngine` |
 
 	
-1. Within the ChatEngine Module, click the _+ create_ button and fill in the following text fields:
+1. Within the ChatEngine Module, click _+ create_ and fill in the following text fields:
 
 	| Field	| Value |
 	|:------|:-----:|
@@ -69,18 +64,18 @@ Setup an account, create a set up pubsub keys, configure these keys to
 	| _Select Event Type_ | `On Request` |
 	| _URI path_ | `chat-engine-server` |
 
-1. Press the _Create_ Function button to navigate to the PubNub Functions Console.
-1. With the console open, copy & paste the server code at `app/functions/server.js` into the console editor. 
-1. Click the _Save_ button at the top left-hand side of the console editor.
-1. Click the _My Secrets_ button, enter the following, and click the _Save_ button (get the `secretKey` from the App and Key [page](admin.pubnub.com)):
+1. Click _Create_ Function to navigate to the PubNub Functions Console.
+1. With the console open, copy & paste the server code at `app/functions/server.js` into the console editor and click save. 
+1. Click _Save_ at the top left side of the console editor.
+1. Click _My Secrets_, and enter the following, (get the `secretKey` from the App and Key [page](admin.pubnub.com)):
 
 	| Field	| Value |
 	|:------|:-----:|
 	| _Enter Key_ | `secretKey`|
 	| _Enter Value_ | `__COPY_AND_PASTE_PUBNUB_SECRET_KEY__` |
-	
-1. Returning to the console, click the _Start_ Function button in the top right-hand corner of the console.
-1. Done! 
+
+1. Click _Save_.
+1. Returning to the console, click _Start_ Function and you are done.
 
 ## Building Chat Applications with PubNub
 
