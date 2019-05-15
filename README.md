@@ -39,7 +39,7 @@ The following outlines how to manually set up a PubNub ChatEngine Framework Appl
 
 ## Provisioning the ChatEngine Framework Function
 
-### I. Bundle the server Server Code.
+### Bundle the server Server Code.
 
 The REST api is constructed of several files to improve understandability. The files
 must be bundled into a single function to upload to PubNub.
@@ -49,7 +49,7 @@ must be bundled into a single function to upload to PubNub.
 1. Run `npm test` to verify that the bundle is correct.
 1. Copy the code to your clipboard for later use.
 
-### II. Create a PubNub REST Function.
+### Create a PubNub REST Function.
 
 1. On your [PubNub Admin Dashboard](dashboard.pubnub.com), go the ChatEngine app key you set up in the previous section to upload your Function.
 1. Select the _Functions_ tab on the top left side of the page.
