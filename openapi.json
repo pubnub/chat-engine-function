@@ -1,0 +1,746 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "chat-engine",
+    "description": "The ChatEngine PubNub function is an HTTP endpoint that is used for persistent data storage, authentication, and security.",
+    "contact": {},
+    "version": "0.9.18"
+  },
+  "servers": [
+    {
+      "url": "https://pubsub.pubnub.com/v1/blocks/sub-key/{subKey}/chat-engine",
+      "variables": {
+        "subKey": {
+          "default": "demo",
+          "description": "Your PubNub subscribe key."
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/user_state": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "UserStatePost",
+        "description": "Not called from ChatEngine client directly. Instead, this endpoint is called from PubNub presence webhooks. When user state is updated, PubNub presence fires a webhook request to ChatEngine server.\n\nThe uuid and channel provided by the PubNub webhook are used to generate the key used in the kv store for the user. \n\nSee https://support.pubnub.com/support/solutions/articles/14000043566-can-pubnub-call-my-server-via-webhooks-when-presence-events-occur-",
+        "operationId": "UserStatePost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_stateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "UserStateGet",
+        "description": "Called from ChatEngine to restore previously set user state by retrieving it from the kv store. This is called automatically when a user is encountered that has not had state set through any previous means. The most common use case for this is a user appearing in chat.search() that is currently offline.",
+        "operationId": "UserStateGet",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "description": "The uuid of the use to retrieve state information for.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "global",
+            "in": "query",
+            "description": "The global channel for the ChatEngine application.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": "{\n  username: \"ianjennings\",\n  customDataHere: true\n}"
+                },
+                "example": "{\n  username: \"ianjennings\",\n  customDataHere: true\n}"
+              }
+            }
+          },
+          "503": {
+            "$ref": "#/components/responses/kvNotGet"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/invite": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "InvitePost",
+        "description": "Called when chat.invite() is called. Does not do anything by default as security policy is open. In the case where a security policy is implemented, logic on the server would grant the uuid supplied in \"to\" access to the {chat.channel}.",
+        "operationId": "InvitePost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/inviteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/chat": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "ChatPost",
+        "description": "Called on chat.update() with enableMeta true in ChatEngine config. Stores the {chat.meta} from the JSON body into the PubNub key value store.",
+        "operationId": "ChatPost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/chatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "503": {
+            "description": "KV Store Was Not Able To Set: \"${key}\"",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "none"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "ChatGet",
+        "description": "Called on chat creation if enableMeta is true in ChatEngine config. Retuns chat metadata from the PubNub kv store. See POST ?route=chat to see how metadata is set.",
+        "operationId": "ChatGet",
+        "parameters": [
+          {
+            "name": "channel",
+            "in": "query",
+            "description": "The PubNub channel for the chat which meta information should be retrieved from.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "The uuid of the ChatEngine client trying to access chat metadata.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "global",
+            "in": "query",
+            "description": "The global channel for the ChatEngine application.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authKey",
+            "in": "query",
+            "description": "The authKey used to authenticate the request.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": "{\n  \"found\": true,\n  \"chat\": {\n    \"channel\": \"chat-engine\",\n    \"group\": \"custom\",\n    \"private\": false,\n    \"meta\": {}\n  }\n}"
+                },
+                "example": "{\n  \"found\": true,\n  \"chat\": {\n    \"channel\": \"chat-engine\",\n    \"group\": \"custom\",\n    \"private\": false,\n    \"meta\": {}\n  }\n}"
+              }
+            }
+          },
+          "503": {
+            "$ref": "#/components/responses/kvNotGet"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/join": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "JoinPost",
+        "description": "The last endpoint called as a part of chat handshake. Adds the supplied chat channel to one of three channel groups the client is subscribed to. The channel group is a join of the global channel, user uuid, and the supplied chat group.\n\n* {global}#{uuid}#{chat.group}",
+        "operationId": "JoinPost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/chatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/signatureResolve"
+          },
+          "404": {
+            "$ref": "#/components/responses/vaultNotGet"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/leave": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "LeavePost",
+        "description": "This endpoint is executed when Chat.leave() is called from the client. Removes the {chat.channel} from the channel group. Channel group is built using supplied parameters like {global}, {uuid}, and {chat.group}.\n\n* {global}#{uuid}#{chat.group}",
+        "operationId": "LeavePost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/chatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/signatureResolve"
+          },
+          "404": {
+            "$ref": "#/components/responses/vaultNotGet"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/grant": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "GrantPost",
+        "description": "The first endpoint called as a part of chat handshake. Grants the authKey read and write access to the chat channel and chat presence channel.\n\n* {chat.channel}\n* {chat.channel}-pnpres",
+        "operationId": "GrantPost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/chatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/missedMalformed"
+          },
+          "403": {
+            "$ref": "#/components/responses/accessDeniedPAM"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/group": {
+      "post": {
+        "tags": [
+          "Bootstrap"
+        ],
+        "summary": "GroupPost",
+        "description": "The final endpoint called as a part of bootstrap handshake. Grants the authKey read access to channel groups for generic chats including #rooms, #system, #custom and the associated presence channels.\n\nChannel Groups:\n\n* {global}#{uuid}#rooms\n* {global}#{uuid}#rooms-pnpres\n* {global}#{uuid}#system\n* {global}#{uuid}#system-pnpres\n* {global}#{uuid}#custom\n* {global}#{uuid}#custom-pnpres",
+        "operationId": "GroupPost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bootstrapRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/missedMalformed"
+          },
+          "403": {
+            "$ref": "#/components/responses/accessDeniedPAM"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/user_read": {
+      "post": {
+        "tags": [
+          "Bootstrap"
+        ],
+        "summary": "UserReadPost",
+        "description": "The second endpoint called as part of bootstrap handshake. Grants everybody read access to #read channel root based on your uuid.\n\n* {global}#user:{uuid}#read.*",
+        "operationId": "UserReadPost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bootstrapRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/missedMalformed"
+          },
+          "403": {
+            "$ref": "#/components/responses/accessDeniedPAM"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/user_write": {
+      "post": {
+        "tags": [
+          "Bootstrap"
+        ],
+        "summary": "UserWritePost",
+        "description": "The third endpoint called as part of bootstrap handshake. Grants everybody write access to #write channel root based on your uuid.\n\n* {global}#user:{uuid}#write.*",
+        "operationId": "UserWritePost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bootstrapRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/missedMalformed"
+          },
+          "403": {
+            "$ref": "#/components/responses/accessDeniedPAM"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/bootstrap": {
+      "post": {
+        "tags": [
+          "Bootstrap"
+        ],
+        "summary": "BootstrapPost",
+        "description": "The first endpoint to be called when ChatEngine boots as part of bootstrap handshake. Grants the authKey read and write access on all public chats, and system chats needed for ChatEngine to function like #me, #read, and #write.\n\nChannel Groups:\n\n* {global}#chat#public.*\n* {global}#user#{uuid}#me.*\n* {global}#user#{uuid}#write.*\n* {global}#user#{uuid}#read.*",
+        "operationId": "BootstrapPost",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bootstrapRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/missedMalformed"
+          },
+          "403": {
+            "$ref": "#/components/responses/accessDeniedPAM"
+          }
+        },
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+       "signatureResolve": {
+        "description": "Signature Was Not Able To Resolve It",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "vaultNotGet": {
+        "description": "Vault Was Not Able To Get The SecretKey",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "accessDeniedPAM": {
+        "description": "Access Was Denied By PAM",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "missedMalformed": {
+        "$ref": "#/components/responses/missedMalformed",
+        "description": "Missed Or Malformed Message",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "kvNotGet": {
+        "description": "KV Store Was Not Able To Get: \"${key}\"",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "inviteRequest": {
+        "title": "inviteRequest",
+        "required": [
+          "to"
+        ],
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "description": "The uuid of the user to invite to the chat."
+          }
+        }
+      },
+      "Data": {
+        "title": "Data",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "bootstrapRequest": {
+        "title": "bootstrapRequest",
+        "required": [
+          "uuid",
+          "global",
+          "authKey"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "integer",
+            "description": "The uuid of the current user. Comes from Me.uuid.",
+            "format": "int64"
+          },
+          "global": {
+            "type": "string",
+            "description": "The PubNub channel for the global chat. ChatEngine.global.channel."
+          },
+          "authKey": {
+            "type": "string",
+            "description": "The PubNub.authKey supplied in ChatEngine.connect()."
+          }
+        },
+        "example": {
+          "uuid": 1539992210518,
+          "global": "chat-engine-angular-simple",
+          "authKey": "auth-key"
+        }
+      },
+      "user_stateRequest": {
+        "title": "user_stateRequest",
+        "required": [
+          "uuid",
+          "channel",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "integer",
+            "description": "The uuid of the user to get state information for.",
+            "format": "int64"
+          },
+          "channel": {
+            "type": "string",
+            "description": "The PubNub channel state is stored on."
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data"
+          }
+        },
+        "example": {
+          "uuid": 1539992231906,
+          "channel": "chat-engine-angular-simple#chat#public.#1539992238017",
+          "data": {
+            "name": "Ian Jennings"
+          }
+        }
+      },
+      "chatRequest": {
+        "title": "chatRequest",
+        "required": [
+          "uuid",
+          "global",
+          "authKey",
+          "chat"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "integer",
+            "description": "The uuid of the current user. Comes from Me.uuid.",
+            "format": "int64"
+          },
+          "global": {
+            "type": "string",
+            "description": "The PubNub channel for the global chat. ChatEngine.global.channel."
+          },
+          "authKey": {
+            "type": "string",
+            "description": "The PubNub.authKey supplied in ChatEngine.connect()."
+          },
+          "chat": {
+            "$ref": "#/components/schemas/Chat"
+          }
+        }
+      },
+      "Chat": {
+        "title": "Chat",
+        "required": [
+          "channel",
+          "group",
+          "private",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "description": "The PubNub Channel the chat operates on. Comes from {chat.channel}."
+          },
+          "group": {
+            "type": "string",
+            "description": "The PubNub channel group for the chat."
+          },
+          "private": {
+            "type": "boolean",
+            "description": "If the chat is public or private."
+          },
+          "meta": {
+            "type": "object",
+            "description": "The meta object for the chat."
+          }
+        }
+      },
+      "Meta": {
+        "title": "Meta",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
