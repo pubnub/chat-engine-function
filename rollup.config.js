@@ -14,7 +14,7 @@ const convertImportToRequire = () => ({
 export default [
     {
 		external: ['kvstore', 'pubnub', 'xhr', 'crypto', 'codec/base64','codec/query_string', 'vault'],
-		input: 'src/functions/server.js',
+		input: 'src/server.js',
 		output: {
 			file: 'build/server.js',
 			format: 'es',
