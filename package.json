@@ -5,9 +5,8 @@
   "main": "server.js",
   "scripts": {
     "build": "rollup -c",
-    "build-docs": "redoc-cli bundle openapi.json --output docs/index.html",
-    "test": "mocha --require @babel/register 'test/**/**test.js'",
-    "start": "node app/server.js"
+    "build-docs": "redoc-cli bundle openapi.json --output build/api-docs/index.html",
+    "test": "mocha --require @babel/register 'test/**/**test.js'"
   },
   "repository": {
     "type": "git",

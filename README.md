@@ -45,7 +45,7 @@ The REST api is composed of several files to improve understandability. The file
 must be bundled into a single function to upload to PubNub.
 
 1. Clone the `chat-engine-server` repo and run `npm install`.
-1. Run `npm run build` to create a bundled function at `app/functions/server.js`.
+1. Run `npm run build` to create a bundled function at `build/server.js`.
 1. Run `npm test` to verify that the bundle is correct.
 1. Copy the code to your clipboard for later use.
 
@@ -70,7 +70,7 @@ must be bundled into a single function to upload to PubNub.
 	| _URI path_ | `chat-engine-server` |
 
 1. Click _Create_ Function to navigate to the PubNub Functions Console.
-1. With the console open, copy and paste the server code from `app/functions/server.js` into the console editor and click _Save__.
+1. With the console open, copy and paste the server code from `build/server.js` into the console editor and click _Save__.
 1. Click _Save_ at the top left side of the console editor.
 1. Click _My Secrets_, and enter the following, (get the `secretKey` from the App and Key [page](admin.pubnub.com)):
 

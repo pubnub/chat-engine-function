@@ -1,6 +1,5 @@
 .DS_Store
-docs
+build
 node_modules
 coverage
-app/*
 .nyc_output/
