@@ -1,10 +1,10 @@
 import chai from 'chai';
-import authKey from '../../src/functions/validate/authKey';
-import channel from '../../src/functions/validate/channel';
-import chat from '../../src/functions/validate/chat';
-import global from '../../src/functions/validate/global';
-import route from '../../src/functions/validate/route';
-import uuid from '../../src/functions/validate/uuid';
+import authKey from '../../src/validate/authKey';
+import channel from '../../src/validate/channel';
+import chat from '../../src/validate/chat';
+import global from '../../src/validate/global';
+import route from '../../src/validate/route';
+import uuid from '../../src/validate/uuid';
 
 const assert = chai.assert;
 
