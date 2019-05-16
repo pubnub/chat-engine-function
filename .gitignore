@@ -3,6 +3,5 @@ build
 node_modules
 coverage
 chatengine-setup/
-app/*
 lib/*.js
 .nyc_output/

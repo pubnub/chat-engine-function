@@ -58,7 +58,7 @@ describe('#chat engine server', () => {
     }
 
     beforeEach((done) => {
-        server = Mock('./app/functions/server.js', { xhr, crypto, vault });
+        server = Mock('./build/server.js', { xhr, crypto, vault });
         done();
     });
 
