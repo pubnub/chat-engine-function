@@ -1,3 +1,3 @@
-export default (channel) => {
-    return `meta:${channel}`;
-}
+export default channel => {
+  return `meta:${channel}`;
+};
