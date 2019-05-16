@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "rollup -c",
-    "build-docs": "redoc-cli bundle openapi.json --output build/api-docs/index.html",
+    "build-docs": "redoc-cli bundle chat-engine-api.json --output build/api-docs/index.html",
     "test": "mocha --require @babel/register 'test/**/**test.js'"
   },
   "repository": {
