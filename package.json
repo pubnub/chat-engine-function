@@ -25,12 +25,20 @@
     "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
     "fs": "0.0.1-security",
+    "husky": "^2.3.0",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "path": "^0.12.7",
+    "prettier": "1.17.1",
+    "pretty-quick": "^1.10.0",
     "pubnub-functions-mock": "0.0.17",
     "redoc-cli": "^0.8.3",
     "rollup": "^1.11.3"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }
