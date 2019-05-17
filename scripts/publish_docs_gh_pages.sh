@@ -12,17 +12,10 @@ function uploadToGithubPagesRepo() {
   return
 }
 
-function cloneGitRepo() {
-  REPO_TO_CLONE="${1}"
-  if [ REPO_TO_CLONE != "" ]; then
-    git clone "https://${GH_TOKEN_PUBLISH_DOCS}@github.com/pubnub/${REPO_TO_CLONE}.git"
-  fi
-  return
-}
 
 ## RUN
 echo "compiling js_docs with plugin assets..."
-gulp build-docs
+npm run build-docs
 if [ "${TRAVIS_BRANCH}" == "master" ] \
   && [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
     # Build the JS_DOCs into docs/ dir
