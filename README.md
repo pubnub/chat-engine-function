@@ -41,7 +41,7 @@ The following outlines how to manually set up a PubNub ChatEngine Framework Appl
 
 ### Bundle the server Server Code
 
-The REST api is composed of several files to improve understandability. The files
+The REST API is composed of several files to improve understandability. The files
 must be bundled into a single function to upload to PubNub.
 
 1. Clone the `chat-engine-server` repo and run `npm install`.
@@ -70,7 +70,7 @@ must be bundled into a single function to upload to PubNub.
 	| _URI path_ | `chat-engine-server` |
 
 1. Click _Create_ Function to navigate to the PubNub Functions Console.
-1. With the console open, copy and paste the server code from `build/server.js` into the console editor and click _Save__.
+1. With the console open, copy and paste the server code from `build/server.js` into the console editor and click _Save_.
 1. Click _Save_ at the top left side of the console editor.
 1. Click _My Secrets_, and enter the following, (get the `secretKey` from the App and Key [page](admin.pubnub.com)):
 
