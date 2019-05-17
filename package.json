@@ -4,9 +4,11 @@
   "description": "REST API for ChatEngine",
   "main": "server.js",
   "scripts": {
-    "build": "rollup -c",
+    "build-server": "rollup -c",
     "build-docs": "redoc-cli bundle chat-engine-api.json --output build/api-docs/index.html",
-    "test": "mocha --require @babel/register 'test/**/**test.js'"
+    "build": "npm run build-server && npm run build-docs",
+    "test-only": "mocha --require @babel/register 'test/**/**test.js'",
+    "test": "npm run build && npm run test-only"
   },
   "repository": {
     "type": "git",
