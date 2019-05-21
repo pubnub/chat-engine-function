@@ -3,6 +3,9 @@
 This repository contains the REST API running as a PubNub function that is required for
 the [ChatEngine Framework](https://github.com/pubnub/chat-engine/) to operate.
 
+Documentation
+You can find the full docs on the [documentation website](https://pubnub.github.io/chat-engine-server/).
+
 ## Provisioning the ChatEngine Framework Application and Key
 
 To set up PubNub to host the ChatEngine Framework REST API on a PubNub Function, you must first set up a new PubNub App.
