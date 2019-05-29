@@ -1,4 +1,4 @@
-# ChatEngine Framework Server
+# [ChatEngine Framework Server](https://pubnub.github.io/chat-engine-server/)
 
 This repository contains the REST API running as a PubNub function that is required for
 the [ChatEngine Framework](https://github.com/pubnub/chat-engine/) to operate.
